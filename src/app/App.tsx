@@ -37,6 +37,10 @@ export function App() {
     setItems(scored);
   };
 
+  const posCount = items.filter(i => i.sentiment === 'Positive').length;
+  const negCount = items.filter(i => i.sentiment === 'Negative').length;
+  const neuCount = items.filter(i => i.sentiment === 'Neutral').length;
+
   return (
     <div style={{ padding: '2rem', fontFamily: 'sans-serif' }}>
       <h1>CampusPulse Feedback Analyzer (Prototype)</h1>
@@ -52,6 +56,15 @@ export function App() {
         Analyze Feedback
       </button>
 
+      {items.length > 0 && (
+        <div style={{ display: 'flex', gap: '1rem', marginTop: '1.5rem', background: '#f5f5f5', padding: '1rem', borderRadius: '6px' }}>
+          <div><strong>Total:</strong> {items.length}</div>
+          <div style={{ color: '#168B69' }}><strong>Positive:</strong> {posCount}</div>
+          <div style={{ color: '#DC2626' }}><strong>Negative:</strong> {negCount}</div>
+          <div style={{ color: '#6B7280' }}><strong>Neutral:</strong> {neuCount}</div>
+        </div>
+      )}
+
       <div style={{ marginTop: '2rem' }}>
         <h2>Feedback Items ({items.length})</h2>
         {items.length === 0 ? (
@@ -59,8 +72,19 @@ export function App() {
         ) : (
           <ul>
             {items.map((item, i) => (
-              <li key={i}>
-                <strong>[{item.sentiment}]</strong> {item.text}
+              <li key={i} style={{ marginBottom: '0.5rem' }}>
+                <span style={{
+                  padding: '2px 6px',
+                  borderRadius: '4px',
+                  fontSize: '0.85rem',
+                  fontWeight: 'bold',
+                  marginRight: '8px',
+                  background: item.sentiment === 'Positive' ? '#D1FAE5' : item.sentiment === 'Negative' ? '#FEE2E2' : '#F3F4F6',
+                  color: item.sentiment === 'Positive' ? '#065F46' : item.sentiment === 'Negative' ? '#991B1B' : '#374151'
+                }}>
+                  {item.sentiment}
+                </span>
+                {item.text}
               </li>
             ))}
           </ul>
