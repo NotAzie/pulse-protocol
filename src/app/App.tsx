@@ -26,7 +26,10 @@ export function App() {
   const [items, setItems] = useState<FeedbackItem[]>([]);
 
   const handleAnalyze = () => {
-    const lines = text.split('\n');
+    const lines = text.split('\n')
+      .map(line => line.trim())
+      .filter(line => line.length > 0);
+
     const scored = lines.map(line => ({
       text: line,
       sentiment: scoreComment(line)
@@ -51,13 +54,17 @@ export function App() {
 
       <div style={{ marginTop: '2rem' }}>
         <h2>Feedback Items ({items.length})</h2>
-        <ul>
-          {items.map((item, i) => (
-            <li key={i}>
-              <strong>[{item.sentiment}]</strong> {item.text}
-            </li>
-          ))}
-        </ul>
+        {items.length === 0 ? (
+          <p style={{ color: '#666' }}>Enter comments above to see results.</p>
+        ) : (
+          <ul>
+            {items.map((item, i) => (
+              <li key={i}>
+                <strong>[{item.sentiment}]</strong> {item.text}
+              </li>
+            ))}
+          </ul>
+        )}
       </div>
     </div>
   );
