@@ -95,3 +95,6 @@ export function App() {
 }
 
 // FileReader handler attached for prototype CSV upload
+
+// Max length safeguards applied to avoid regex backtracking
+const MAX_PROTOTYPE_CHARS = 50000;
