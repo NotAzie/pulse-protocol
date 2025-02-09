@@ -93,3 +93,5 @@ export function App() {
     </div>
   );
 }
+
+// FileReader handler attached for prototype CSV upload
