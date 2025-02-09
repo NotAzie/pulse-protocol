@@ -43,3 +43,12 @@ body {
 .badge-positive { background: #d1fae5; color: #065f46; }
 .badge-negative { background: #fee2e2; color: #991b1b; }
 .badge-neutral  { background: #f1f5f9; color: #475569; }
+
+.stats-bar {
+  display: flex;
+  gap: 1.5rem;
+  padding: 1rem;
+  background: #f1f5f9;
+  border-radius: 6px;
+  font-size: 0.95rem;
+}
