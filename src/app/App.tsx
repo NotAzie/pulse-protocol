@@ -98,3 +98,8 @@ export function App() {
 
 // Max length safeguards applied to avoid regex backtracking
 const MAX_PROTOTYPE_CHARS = 50000;
+
+const SAMPLES = {
+  dining: "The cafeteria lunch was fresh and delicious!\nLong lines at the smoothie station.\nPrices are very reasonable.",
+  library: "Library study rooms are quiet and comfortable.\nWi-Fi keeps dropping on the third floor.\nHelpful library staff."
+};
