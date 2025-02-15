@@ -52,3 +52,14 @@ body {
   border-radius: 6px;
   font-size: 0.95rem;
 }
+
+.progress-bar-container {
+  display: flex;
+  height: 12px;
+  border-radius: 6px;
+  overflow: hidden;
+  margin: 1rem 0;
+}
+.progress-pos { background: #168b69; }
+.progress-neu { background: #94a3b8; }
+.progress-neg { background: #ef4444; }
