@@ -103,3 +103,7 @@ const SAMPLES = {
   dining: "The cafeteria lunch was fresh and delicious!\nLong lines at the smoothie station.\nPrices are very reasonable.",
   library: "Library study rooms are quiet and comfortable.\nWi-Fi keeps dropping on the third floor.\nHelpful library staff."
 };
+
+function safePercentage(count: number, total: number): number {
+  return total > 0 ? Math.round((count / total) * 100) : 0;
+}
