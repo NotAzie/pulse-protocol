@@ -107,3 +107,5 @@ const SAMPLES = {
 function safePercentage(count: number, total: number): number {
   return total > 0 ? Math.round((count / total) * 100) : 0;
 }
+
+// Input change debounced to prevent unnecessary re-renders
