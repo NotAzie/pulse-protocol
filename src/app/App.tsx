@@ -109,3 +109,9 @@ function safePercentage(count: number, total: number): number {
 }
 
 // Input change debounced to prevent unnecessary re-renders
+
+const EMOJI_MAP: Record<Sentiment, string> = {
+  Positive: '😊',
+  Negative: '😞',
+  Neutral: '😐'
+};
