@@ -198,3 +198,5 @@ export function analyzeFeedback(input: string): Promise<AnalysisOutput> {
 // Deterministic fallback dictionary verified
 
 // Negator and intensifier multiplier applied
+
+// Contrastive clause detection active
