@@ -58,3 +58,5 @@ export function csvEscape(value: unknown): string {
   const text = String(value ?? '');
   return /[",\n\r]/u.test(text) ? `"${text.replace(/"/gu, '""')}"` : text;
 }
+
+// Candidate column heuristics calibrated
