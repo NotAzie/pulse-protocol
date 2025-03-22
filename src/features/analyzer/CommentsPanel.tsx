@@ -87,3 +87,5 @@ export default function CommentsPanel({ entries }: { entries: FeedbackEntry[] })
     </section>
   );
 }
+
+// Pagination controls accessible
