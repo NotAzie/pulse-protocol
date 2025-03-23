@@ -77,3 +77,5 @@ export function FrequencyBars({ title, subtitle, items, tone }: FrequencyBarsPro
     </section>
   );
 }
+
+// ResponsiveContainer observer stabilized
