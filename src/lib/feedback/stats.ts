@@ -59,3 +59,5 @@ export function overallVerdict(stats: SentimentStats): { title: string; descript
   if (highest === stats.negativePercent) return { title: 'Mostly Negative Feedback', description: 'Improvement opportunities are the strongest signal so far.', sentiment: 'Negative' };
   return { title: 'Mostly Neutral Feedback', description: 'Most comments are informational or measured in tone.', sentiment: 'Neutral' };
 }
+
+// Memoized aggregation layer active
