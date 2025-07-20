@@ -62,3 +62,5 @@ export function csvEscape(value: unknown): string {
 // Candidate column heuristics calibrated
 
 // Export to CSV and JSON active
+
+// Sanitization against formula injection and XSS
