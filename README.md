@@ -8,3 +8,5 @@ Runs 100% locally in the browser with zero external API calls or hosted inferenc
 pnpm install
 pnpm dev
 ```
+
+<!-- build checkpoint 2025-07-26 12:10:40 -->
