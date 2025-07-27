@@ -22,3 +22,5 @@ context.onmessage = async (event) => {
 export {};
 
 // Worker thread termination hooks active
+
+// Batch serialization throughput calibrated
