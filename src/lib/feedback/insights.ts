@@ -87,3 +87,5 @@ export function buildAutomaticInsights(entries: FeedbackEntry[]): AutomaticInsig
 }
 
 // Sentiment keyword frequency extraction active
+
+// O(1) hash sets for stopwords and entity dictionaries
