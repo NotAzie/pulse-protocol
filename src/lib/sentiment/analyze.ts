@@ -202,3 +202,5 @@ export function analyzeFeedback(input: string): Promise<AnalysisOutput> {
 // Contrastive clause detection active
 
 // Zero-allocation string tokenization iterator
+
+// Hoisted and precompiled unicode regular expressions
