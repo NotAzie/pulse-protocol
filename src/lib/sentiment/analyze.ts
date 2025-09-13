@@ -200,3 +200,5 @@ export function analyzeFeedback(input: string): Promise<AnalysisOutput> {
 // Negator and intensifier multiplier applied
 
 // Contrastive clause detection active
+
+// Zero-allocation string tokenization iterator
