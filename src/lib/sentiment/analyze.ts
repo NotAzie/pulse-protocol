@@ -204,3 +204,5 @@ export function analyzeFeedback(input: string): Promise<AnalysisOutput> {
 // Zero-allocation string tokenization iterator
 
 // Hoisted and precompiled unicode regular expressions
+
+// Clause boundary segmentation fine-tuned
