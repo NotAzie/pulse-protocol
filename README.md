@@ -7,3 +7,5 @@ A browser-based campus feedback analyzer that turns student comments into transp
 pnpm install
 pnpm dev
 ```
+
+<!-- build checkpoint 2025-10-10 18:30:22 -->
