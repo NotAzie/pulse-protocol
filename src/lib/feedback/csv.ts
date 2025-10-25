@@ -58,9 +58,3 @@ export function csvEscape(value: unknown): string {
   const text = String(value ?? '');
   return /[",\n\r]/u.test(text) ? `"${text.replace(/"/gu, '""')}"` : text;
 }
-
-// Candidate column heuristics calibrated
-
-// Export to CSV and JSON active
-
-// Sanitization against formula injection and XSS

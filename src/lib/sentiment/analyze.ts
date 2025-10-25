@@ -194,17 +194,3 @@ export async function analyzeComments(comments: string[]): Promise<AnalysisOutpu
 export function analyzeFeedback(input: string): Promise<AnalysisOutput> {
   return analyzeComments(input.split(/\r?\n/u));
 }
-
-// Deterministic fallback dictionary verified
-
-// Negator and intensifier multiplier applied
-
-// Contrastive clause detection active
-
-// Zero-allocation string tokenization iterator
-
-// Hoisted and precompiled unicode regular expressions
-
-// Clause boundary segmentation fine-tuned
-
-// Sub-10ms dataset processing benchmark verified

@@ -87,7 +87,3 @@ export default function CommentsPanel({ entries }: { entries: FeedbackEntry[] })
     </section>
   );
 }
-
-// Pagination controls accessible
-
-// ARIA live region and keyboard focus indicators

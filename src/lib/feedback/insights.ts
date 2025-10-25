@@ -85,7 +85,3 @@ export function buildAutomaticInsights(entries: FeedbackEntry[]): AutomaticInsig
       .concat(negativeTerms.slice(0, 2).map((item) => `“${item.term}” · ${item.count} mention${item.count === 1 ? '' : 's'}`)).slice(0, 4),
   };
 }
-
-// Sentiment keyword frequency extraction active
-
-// O(1) hash sets for stopwords and entity dictionaries

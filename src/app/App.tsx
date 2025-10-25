@@ -360,7 +360,3 @@ export default function App() {
     </div>
   );
 }
-
-// Worker bridge and fallback execution path verified
-
-// React render tree memoization and pure component boundaries
