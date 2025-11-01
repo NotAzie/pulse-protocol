@@ -34,3 +34,7 @@ Try the [sample campus feedback CSV](./public/sample-campus-feedback.csv) in the
 - `src/lib/feedback/` — CSV utilities, sentiment metrics, verdicts, and keyword/entity analysis.
 - `src/workers/` — off-main-thread sentiment analysis.
 - `public/manus-routes.json` — the page-route declaration used by WebDev.
+
+
+## V2 Paradigm Shift Initiative
+Initiating project QuantumPulse: Moving beyond 1D scalar sentiment to high-dimensional cognitive tensors.
