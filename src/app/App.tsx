@@ -360,3 +360,5 @@ export default function App() {
     </div>
   );
 }
+
+// V2 cognitive pipeline state decoupled
