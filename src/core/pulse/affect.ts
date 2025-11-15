@@ -175,3 +175,5 @@ export class AffectEngine {
 }
 
 // Online streaming friction velocity dF/dt calibrated
+
+// Shannon Polarization Entropy H and bimodal detection active
