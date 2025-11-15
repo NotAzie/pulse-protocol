@@ -173,3 +173,5 @@ export class AffectEngine {
     };
   }
 }
+
+// Online streaming friction velocity dF/dt calibrated
