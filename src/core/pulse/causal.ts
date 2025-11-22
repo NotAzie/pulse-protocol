@@ -170,3 +170,5 @@ export class CausalGraphEngine {
     };
   }
 }
+
+// Power iteration PageRank topological centrality
