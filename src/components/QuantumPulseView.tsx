@@ -238,3 +238,5 @@ export function QuantumPulseView({ data }: QuantumPulseViewProps) {
     </div>
   );
 }
+
+// Quantum Pulse Matrix HUD telemetry components active
