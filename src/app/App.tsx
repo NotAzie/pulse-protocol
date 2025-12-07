@@ -7,6 +7,8 @@ import {
 import BrandMark from '../components/BrandMark';
 import CommentsPanel from '../features/analyzer/CommentsPanel';
 import { EntityPanel, InsightSummary } from '../features/insights/InsightPanels';
+import { QuantumPulseView } from '../components/QuantumPulseView';
+import { QuantumPulse, type QuantumPulseAnalysis } from '../core/pulse/engine';
 import type { AnalysisOutput } from '../lib/sentiment/analyze';
 import { parseFeedbackCsv, csvEscape, type ParsedFeedbackCsv } from '../lib/feedback/csv';
 import { buildAutomaticInsights, campusEntities, topTerms } from '../lib/feedback/insights';
@@ -79,6 +81,11 @@ export default function App() {
   const positiveTerms = useMemo(() => analysis ? topTerms(analysis.entries, 'Positive') : [], [analysis]);
   const negativeTerms = useMemo(() => analysis ? topTerms(analysis.entries, 'Negative') : [], [analysis]);
   const autoInsights = useMemo(() => analysis ? buildAutomaticInsights(analysis.entries) : null, [analysis]);
+  const quantumAnalysis = useMemo<QuantumPulseAnalysis | null>(() => {
+    if (!analysis || analysis.entries.length === 0) return null;
+    const texts = analysis.entries.map((e) => e.originalText);
+    return QuantumPulse.analyze(texts);
+  }, [analysis]);
   const nonblankCount = feedback.split(/\r?\n/u).filter((line) => line.trim()).length;
   const columnOptions = csvData ? (csvData.candidates.length ? csvData.candidates : csvData.headers) : [];
 
@@ -347,6 +354,8 @@ export default function App() {
             </div>
           </section>
 
+          {quantumAnalysis && <QuantumPulseView data={quantumAnalysis} />}
+
           <section className="lower-grid" aria-label="Campus and narrative insights">
             <EntityPanel entities={entities} />
             {autoInsights ? <InsightSummary insights={autoInsights} /> : <section className="card insight-placeholder" id="insights"><div className="placeholder-icon"><Lightbulb size={19} /></div><p className="eyebrow">A READ ON THE ROOM</p><h2>More than a mood score.</h2><p>We’ll turn the words students use into strengths, recurring issues, and practical next steps.</p><div className="placeholder-link">Derived from your feedback <ArrowRight size={14} /></div></section>}
@@ -360,5 +369,3 @@ export default function App() {
     </div>
   );
 }
-
-// V2 cognitive pipeline state decoupled
