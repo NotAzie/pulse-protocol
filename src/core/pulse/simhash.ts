@@ -96,3 +96,5 @@ export class SimHashEngine {
 }
 
 // O(1) hardware popcount acceleration verified
+
+// Inline micro-optimizations for 64-bit vector math
