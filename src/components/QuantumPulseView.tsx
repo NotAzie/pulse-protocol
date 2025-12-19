@@ -240,3 +240,5 @@ export function QuantumPulseView({ data }: QuantumPulseViewProps) {
 }
 
 // Quantum Pulse Matrix HUD telemetry components active
+
+// Neon luminescent HUD glassmorphism polish
