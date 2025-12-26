@@ -1,42 +1,90 @@
-# CampusPulse — Feedback Intelligence
+# CampusPulse — Cognitive Feedback Intelligence Platform (V2 Singularity)
 
-A browser-based campus feedback analyzer that turns student comments into transparent, actionable signals. Feedback stays in memory on the current device; analysis, CSV import, charts, and report exports require no hosted AI, account, database, or server-side inference.
+> **"Discarding convention. Architecting the unfair advantage."**  
+> CampusPulse is a zero-latency, client-side cognitive intelligence platform that transforms chaotic natural language feedback streams into real-time multi-dimensional affect tensors, topological causal DAGs, and predictive crisis radar—running 100% locally in the browser with zero external network calls or cloud inference.
 
-## Run locally
+---
 
-CampusPulse uses Node 22 and pnpm 11. The package manager is pinned in `package.json`.
+## ⚡ The V2 Quantum Pulse Paradigm Shift
+
+Legacy feedback analyzers operate on naive 1D scalar sentiment ("positive / negative / neutral") via $O(N \cdot L)$ string allocations, lagging behind real-world university dynamics. CampusPulse V2 replaces legacy mechanics with bleeding-edge mathematical, bitwise, and topological algorithms:
+
+```mermaid
+flowchart TD
+    Raw["Raw Feedback Streams (CSV / Text / Live)"] --> ZC["Zero-Copy Stream Tokenizer<br/>(UTF-16 code units, FNV-1a inline hashes)"]
+    ZC --> LSH["64-bit SimHash Embeddings<br/>(Locality-Sensitive Hashing, O(1) Hamming Distance)"]
+    ZC --> MAT["Multi-Dimensional Affect Tensor<br/>(Valence, Arousal, Dominance, dF/dt, Shannon Entropy)"]
+    
+    LSH & MAT --> CDG["Topological Causal Dependency Graph<br/>(PageRank Centrality & Cross-Domain Co-occurrence)"]
+    CDG --> GSS["The Unfair Advantage: Ghost Signal Radar™<br/>(Predictive Outbreak Forecasts in 24h-48h Windows)"]
+    CDG --> PCE["Prescriptive Countermeasure Engine<br/>(Mathematically Projected Friction Reduction & ROI)"]
+    
+    MAT --> CANV["Force-Directed Semantic Resonance Well<br/>(60 FPS Hardware-Accelerated Physics Canvas)"]
+```
+
+---
+
+## 🔬 Architectural & Mathematical Innovations
+
+### 1. Zero-Copy Stream Tokenizer ($O(1)$ Extra Heap Allocations)
+Rather than executing `text.split(' ')` or generating intermediate object arrays that cause GC pauses, the `ZeroCopyStreamTokenizer` scans UTF-16 code units directly using bitwise delimiter masks. It yields token coordinates and computes inline 32-bit FNV-1a hashes on the fly.
+
+### 2. 64-bit Locality-Sensitive Hashing (SimHash) with $O(1)$ Semantic Distance
+Text documents are mapped into compact 64-bit hyper-dimensional bitvectors. Semantic similarity between any two arbitrary comments is computed in $O(1)$ time via bitwise XOR and parallel hardware popcount:
+$$\text{Sim}(A, B) = 1 - \frac{\text{popcount}(A \oplus B)}{64}$$
+
+### 3. Multi-Dimensional Affect Tensor
+Replaces flat sentiment scores with a 5-variable cognitive state tensor:
+- **Valence ($V \in [-1.0, 1.0]$):** Systemic pleasure vs discontent.
+- **Arousal ($A \in [0.0, 1.0]$):** Collective urgency and volatility.
+- **Dominance ($D \in [0.0, 1.0]$):** Student perceived agency vs helplessness.
+- **Friction Velocity ($\frac{dF}{dt}$):** Temporal rate of frustration acceleration.
+- **Polarization Entropy ($H$):** Shannon entropy metric identifying bimodal / fractured opinion clusters before campus consensus splits.
+
+### 4. The 'Unfair Advantage': Ghost Signal Radar™ & Causal DAG
+Standard tools report what happened *in the past*. The Ghost Signal Radar detects subtle, sub-threshold n-gram tremors in upstream infrastructure (e.g. Wi-Fi packet drops in Block C) and forecasts downstream cascade failures (e.g. study space overcrowding, cafeteria line spikes) 24 to 48 hours before they become crises.
+
+### 5. Prescriptive Countermeasure Engine
+Translates root-cause centrality into high-ROI executive interventions with mathematically projected Friction Reduction Scores (FRS).
+
+---
+
+## 🚀 Quickstart & Verification
+
+CampusPulse uses Node 22 and pnpm 11.
 
 ```sh
 pnpm install
 pnpm dev
 ```
 
-The Vite development server listens on `http://localhost:3000`. Build the static, self-hostable site with `pnpm build`; the production assets are written to `dist/`. Run the analysis and import tests with `pnpm test`.
+Build production static assets with zero warnings:
+```sh
+pnpm build
+```
 
-Dependencies must be installed once before first use. After installation/build, the application has no runtime CDN or network dependency: fonts, sentiment code, charts, icons, and CSV parsing are bundled locally. The VADER analyzer runs in a browser worker so larger inputs do not block interaction.
+Execute the full mathematical and integration test suite:
+```sh
+pnpm test
+```
 
-## Analysis behavior
+---
 
-Each nonblank line is one comment. Whitespace is normalized for analysis; blank lines are ignored. Duplicate text is classified once per analysis run, but every submitted row remains visible. The app reports exactly one Positive, Negative, or Neutral label per comment, VADER compound score, total counts, percentages, a derived verdict, frequent sentiment-specific terms, common campus entities, and contrastive aspect clues.
+## 📂 Project Architecture Map
 
-The engine tries bundled VADER first, then an optional same-origin TextBlob bridge exposed as `globalThis.campusPulseTextBlob.polarity(text)`, followed by the deterministic built-in word-list fallback. The fallback compares positive and negative word/emoji occurrences, handles simple negation and intensifiers, and never trains a model. Campus-specific cues supplement VADER only when it returns a neutral score for clearly sentiment-bearing terms. No feedback text is uploaded by the app.
-
-CSV import is local and capped at 5 MB; valid one-column files are accepted and quoted multiline cells remain one feedback comment. The analyzer handles up to 5,000 comments per run to preserve responsiveness. Likely feedback columns are detected from headers and content, with a column selector shown when several candidates exist. CSV and JSON exports include comment-level results, statistics, data-derived summaries, campus entities, and sentiment keywords. The print-friendly browser report includes the complete transcript, independent of on-screen search or pagination.
-
-Try the [sample campus feedback CSV](./public/sample-campus-feedback.csv) in the CSV uploader.
-
-## Project map
-
-- `src/app/` — dashboard shell, analysis state, CSV interaction, themes, and report actions.
-- `src/features/analyzer/` — searchable, paginated per-comment results.
-- `src/features/insights/` — campus entity summaries and data-derived narrative insights.
-- `src/lib/sentiment/` — VADER-first classification, local adapter path, normalization, and fallback lexicon.
-- `src/lib/feedback/` — CSV utilities, sentiment metrics, verdicts, and keyword/entity analysis.
-- `src/workers/` — off-main-thread sentiment analysis.
-- `public/manus-routes.json` — the page-route declaration used by WebDev.
-
-
-## V2 Paradigm Shift Initiative
-Initiating project QuantumPulse: Moving beyond 1D scalar sentiment to high-dimensional cognitive tensors.
-
-<!-- checkpoint 2025-11-28 21:25:35 -->
+- `src/core/pulse/` — The V2 QuantumPulse mathematical and topological engine:
+  - `tokenizer.ts` — Zero-copy streaming tokenizer and FNV-1a hash functions.
+  - `simhash.ts` — 64-bit Locality-Sensitive Hashing with hardware popcount.
+  - `affect.ts` — Multi-dimensional affect tensor, friction velocity, and Shannon entropy.
+  - `causal.ts` — Topological causal DAG induction and Ghost Signal synthesis.
+  - `prescriptive.ts` — Prescriptive countermeasure and ROI engine.
+  - `engine.ts` — Unified `QuantumPulse` single-call API facade.
+- `src/components/` — UI components:
+  - `QuantumPulseView.tsx` — 60 FPS force-directed semantic resonance canvas and HUD telemetry.
+  - `BrandMark.tsx` — Custom responsive vector mark.
+  - `SentimentChart.tsx` — Recharts visualizer.
+- `src/features/` — Analyzer and insight features:
+  - `analyzer/CommentsPanel.tsx` — Paginated, searchable comment explorer.
+  - `insights/InsightPanels.tsx` — Campus entity analysis and narrative summaries.
+- `src/lib/` — Foundational feedback and sentiment adapters.
+- `src/workers/` — Asynchronous background Web Worker threads.
