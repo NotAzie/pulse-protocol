@@ -170,7 +170,3 @@ export class CausalGraphEngine {
     };
   }
 }
-
-// Power iteration PageRank topological centrality
-
-// Ghost Signal Synthesis active: 24h-48h forecast window

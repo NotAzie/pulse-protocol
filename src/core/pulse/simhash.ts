@@ -94,7 +94,3 @@ export class SimHashEngine {
     return 1 - (SimHashEngine.hammingDistance(a, b) / 64);
   }
 }
-
-// O(1) hardware popcount acceleration verified
-
-// Inline micro-optimizations for 64-bit vector math

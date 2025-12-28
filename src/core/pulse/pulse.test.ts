@@ -114,5 +114,3 @@ describe('QuantumPulse Next-Gen Engine Test Suite', () => {
     });
   });
 });
-
-// Stress test throughput verified at 1,000 comments/sec
