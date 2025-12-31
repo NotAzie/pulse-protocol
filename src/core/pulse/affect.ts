@@ -10,6 +10,8 @@
  * 5. Polarization Entropy (H): Shannon entropy detecting fractured/bimodal opinion clusters
  */
 
+import { fnv1a, ZeroCopyStreamTokenizer } from './tokenizer';
+
 export interface AffectPoint {
   valence: number;
   arousal: number;
@@ -27,8 +29,7 @@ export interface AffectTensor {
 }
 
 // Pre-computed Affect Lexicon with V-A-D coordinates
-const AFFECT_LEXICON: Record<string, AffectPoint> = {
-  // High Valence, Calm (Delight)
+const RAW_LEXICON: Record<string, AffectPoint> = {
   amazing: { valence: 0.92, arousal: 0.75, dominance: 0.8 },
   excellent: { valence: 0.88, arousal: 0.65, dominance: 0.75 },
   great: { valence: 0.8, arousal: 0.6, dominance: 0.7 },
@@ -38,7 +39,6 @@ const AFFECT_LEXICON: Record<string, AffectPoint> = {
   fast: { valence: 0.75, arousal: 0.6, dominance: 0.7 },
   smooth: { valence: 0.72, arousal: 0.25, dominance: 0.68 },
 
-  // Low Valence, High Arousal (Crisis / Outrage)
   terrible: { valence: -0.92, arousal: 0.88, dominance: 0.2 },
   awful: { valence: -0.88, arousal: 0.82, dominance: 0.25 },
   broken: { valence: -0.85, arousal: 0.78, dominance: 0.3 },
@@ -47,40 +47,40 @@ const AFFECT_LEXICON: Record<string, AffectPoint> = {
   expensive: { valence: -0.65, arousal: 0.7, dominance: 0.4 },
   crowded: { valence: -0.6, arousal: 0.75, dominance: 0.38 },
 
-  // Low Valence, Low Arousal (Apathy / Fatigue)
   boring: { valence: -0.65, arousal: 0.2, dominance: 0.3 },
   slow: { valence: -0.68, arousal: 0.45, dominance: 0.35 },
   confusing: { valence: -0.7, arousal: 0.55, dominance: 0.28 },
   useless: { valence: -0.85, arousal: 0.4, dominance: 0.2 },
 };
 
+// O(1) Integer Hash Dispatch Map
+const HASH_LEXICON = new Map<number, AffectPoint>();
+for (const [k, v] of Object.entries(RAW_LEXICON)) {
+  HASH_LEXICON.set(fnv1a(k), v);
+}
+
 export class AffectEngine {
   /**
-   * Score an individual comment into 3D Affect space.
+   * Fast token-streaming score into 3D Affect space using direct integer hash lookups.
    */
   static scoreText(text: string): AffectPoint {
-    const words = text.toLowerCase().match(/[a-z0-9'-]+/g) ?? [];
-    if (words.length === 0) {
-      return { valence: 0, arousal: 0.3, dominance: 0.5 };
-    }
-
+    const tokenizer = new ZeroCopyStreamTokenizer(text);
     let sumV = 0;
     let sumA = 0;
     let sumD = 0;
     let matched = 0;
 
-    for (const w of words) {
-      const pt = AFFECT_LEXICON[w];
+    tokenizer.scan((token) => {
+      const pt = HASH_LEXICON.get(token.hash);
       if (pt) {
         sumV += pt.valence;
         sumA += pt.arousal;
         sumD += pt.dominance;
         matched++;
       }
-    }
+    });
 
     if (matched === 0) {
-      // Neutral default
       return { valence: 0, arousal: 0.25, dominance: 0.5 };
     }
 
@@ -113,13 +113,10 @@ export class AffectEngine {
     let sumA = 0;
     let sumD = 0;
 
-    // Valence distribution buckets for Shannon entropy:
-    // [-1 to -0.33], [-0.33 to 0.33], [0.33 to 1.0]
     let negCount = 0;
     let neuCount = 0;
     let posCount = 0;
 
-    // Split stream into halves to compute friction velocity (dF/dt)
     const mid = Math.floor(n / 2);
     let earlyFrustration = 0;
     let lateFrustration = 0;
@@ -143,12 +140,10 @@ export class AffectEngine {
     const meanA = sumA / n;
     const meanD = sumD / n;
 
-    // Friction Velocity: acceleration of frustration in latter half vs early half
     const earlyAvg = mid > 0 ? earlyFrustration / mid : 0;
     const lateAvg = (n - mid) > 0 ? lateFrustration / (n - mid) : 0;
     const frictionVelocity = Math.max(-1, Math.min(1, (lateAvg - earlyAvg) * 1.5));
 
-    // Shannon Polarization Entropy H = -sum(p * log2(p)) / log2(3)
     const pNeg = negCount / n;
     const pNeu = neuCount / n;
     const pPos = posCount / n;
@@ -159,7 +154,6 @@ export class AffectEngine {
       (pPos > 0 ? pPos * Math.log2(pPos) : 0)
     ) / Math.log2(3);
 
-    // Bimodal check: high polarization when both pos and neg are high while neutral is low
     const bimodal = pPos > 0.3 && pNeg > 0.3 && pNeu < 0.25;
 
     return {

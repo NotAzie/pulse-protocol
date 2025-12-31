@@ -14,22 +14,22 @@ import { AffectEngine } from './affect';
 export interface CausalNode {
   id: string;
   label: string;
-  frictionWeight: number; // Node urgency/friction intensity
-  centrality: number;     // PageRank topological centrality (Root Cause score)
+  frictionWeight: number;
+  centrality: number;
   isRootCause: boolean;
 }
 
 export interface CausalEdge {
   from: string;
   to: string;
-  confidence: number; // Directed causal confidence [0.0 - 1.0]
+  confidence: number;
   rationale: string;
 }
 
 export interface GhostSignal {
   id: string;
   targetDomain: string;
-  riskProbability: number; // Predicted outbreak likelihood (0.0 - 1.0)
+  riskProbability: number;
   projectedImpact: 'Critical' | 'Severe' | 'Moderate';
   precursorPattern: string;
   forecastWindowHours: number;
@@ -50,45 +50,46 @@ const DOMAINS: Array<{ id: string; label: string; terms: string[] }> = [
   { id: 'admin', label: 'Academic & Admin Support', terms: ['advisor', 'registrar', 'staff', 'scheduling', 'support', 'wait', 'queue'] },
 ];
 
+const DOMAIN_INDEX = new Map<string, number>();
+DOMAINS.forEach((d, idx) => DOMAIN_INDEX.set(d.id, idx));
+
 export class CausalGraphEngine {
   static analyze(comments: string[]): CausalAnalysis {
-    // 1. Measure domain friction using AffectEngine valence coordinates
-    const domainFriction: Record<string, number> = {};
-    const domainCounts: Record<string, number> = {};
-    const coOccur: Record<string, Record<string, number>> = {};
+    const numDomains = DOMAINS.length;
+    const domainFriction = new Float32Array(numDomains);
+    const domainCounts = new Int32Array(numDomains);
+    // Flat typed adjacency matrix: numDomains x numDomains
+    const coOccur = new Int32Array(numDomains * numDomains);
 
-    for (const d of DOMAINS) {
-      domainFriction[d.id] = 0;
-      domainCounts[d.id] = 0;
-      coOccur[d.id] = {};
-      for (const d2 of DOMAINS) coOccur[d.id][d2.id] = 0;
-    }
-
-    for (const comment of comments) {
+    for (let cIdx = 0; cIdx < comments.length; cIdx++) {
+      const comment = comments[cIdx];
       const lower = comment.toLowerCase();
       const affect = AffectEngine.scoreText(comment);
       const isNegative = affect.valence < 0.1 || lower.includes('down') || lower.includes('packed') || lower.includes('noisy') || lower.includes('slow');
 
-      const hitDomains: string[] = [];
-      for (const d of DOMAINS) {
-        if (d.terms.some(t => lower.includes(t))) {
-          hitDomains.push(d.id);
-          domainCounts[d.id]++;
-          if (isNegative) domainFriction[d.id] += 1;
+      // Track domain indices hit
+      const hitIndices: number[] = [];
+      for (let d = 0; d < numDomains; d++) {
+        const terms = DOMAINS[d].terms;
+        for (let t = 0; t < terms.length; t++) {
+          if (lower.includes(terms[t])) {
+            hitIndices.push(d);
+            domainCounts[d]++;
+            if (isNegative) domainFriction[d]++;
+            break;
+          }
         }
       }
 
-      // Track co-occurrence across comments
-      for (let i = 0; i < hitDomains.length; i++) {
-        for (let j = 0; j < hitDomains.length; j++) {
+      for (let i = 0; i < hitIndices.length; i++) {
+        for (let j = 0; j < hitIndices.length; j++) {
           if (i !== j) {
-            coOccur[hitDomains[i]][hitDomains[j]]++;
+            coOccur[hitIndices[i] * numDomains + hitIndices[j]]++;
           }
         }
       }
     }
 
-    // 2. Build Causal Edges based on domain dependencies
     const edges: CausalEdge[] = [];
     const dependencyTemplates: Array<{ from: string; to: string; rationale: string }> = [
       { from: 'wifi', to: 'library', rationale: 'Network disconnection drives students to seek alternate study halls' },
@@ -98,10 +99,14 @@ export class CausalGraphEngine {
     ];
 
     for (const t of dependencyTemplates) {
-      const fFrom = domainFriction[t.from] ?? 0;
-      const fTo = domainFriction[t.to] ?? 0;
+      const fromIdx = DOMAIN_INDEX.get(t.from)!;
+      const toIdx = DOMAIN_INDEX.get(t.to)!;
+      const fFrom = domainFriction[fromIdx];
+      const fTo = domainFriction[toIdx];
+
       if (fFrom > 0) {
-        const conf = Math.min(0.95, 0.5 + (coOccur[t.from][t.to] * 0.1) + ((fFrom / (fFrom + Math.max(1, fTo))) * 0.3));
+        const coCount = coOccur[fromIdx * numDomains + toIdx];
+        const conf = Math.min(0.95, 0.5 + (coCount * 0.1) + ((fFrom / (fFrom + Math.max(1, fTo))) * 0.3));
         edges.push({
           from: t.from,
           to: t.to,
@@ -111,9 +116,8 @@ export class CausalGraphEngine {
       }
     }
 
-    // 3. Compute Topological Centrality
-    const nodes: CausalNode[] = DOMAINS.map(d => {
-      const f = domainFriction[d.id] || (domainCounts[d.id] > 0 ? 0.5 : 0.1);
+    const nodes: CausalNode[] = DOMAINS.map((d, idx) => {
+      const f = domainFriction[idx] || (domainCounts[idx] > 0 ? 0.5 : 0.1);
       const outWeight = edges.filter(e => e.from === d.id).reduce((acc, e) => acc + e.confidence, 0);
       const centrality = Number((f * (1 + outWeight * 0.8)).toFixed(2));
       return {
@@ -130,7 +134,6 @@ export class CausalGraphEngine {
       nodes[0].isRootCause = true;
     }
 
-    // 4. Ghost Signal Synthesis (Predictive Anomaly Forecasts)
     const ghostSignals: GhostSignal[] = [];
     const rootNode = nodes[0];
 

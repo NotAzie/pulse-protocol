@@ -13,6 +13,10 @@ export interface SimHash64 {
   lo: number; // 32-bit unsigned low word
 }
 
+// Reusable zero-allocation accumulation buffers
+const ACCUM_HI = new Int32Array(32);
+const ACCUM_LO = new Int32Array(32);
+
 /**
  * Hardware-style bitwise parallel popcount (Hamming weight).
  */
@@ -42,23 +46,24 @@ function hash64(val: number): { hi: number; lo: number } {
 
 export class SimHashEngine {
   /**
-   * Computes a 64-bit SimHash vector from input text using streaming zero-allocation tokens.
+   * Computes a 64-bit SimHash vector from input text using zero-allocation buffer pooling.
    */
   static compute(text: string): SimHash64 {
-    const vHi = new Int32Array(32);
-    const vLo = new Int32Array(32);
-    const tokenizer = new ZeroCopyStreamTokenizer(text);
+    ACCUM_HI.fill(0);
+    ACCUM_LO.fill(0);
 
+    const tokenizer = new ZeroCopyStreamTokenizer(text);
     let tokenCount = 0;
-    for (const token of tokenizer.tokens()) {
+
+    tokenizer.scan((token) => {
       tokenCount++;
       const { hi, lo } = hash64(token.hash);
 
       for (let bit = 0; bit < 32; bit++) {
-        vHi[bit] += ((hi >>> bit) & 1) ? 1 : -1;
-        vLo[bit] += ((lo >>> bit) & 1) ? 1 : -1;
+        ACCUM_HI[bit] += ((hi >>> bit) & 1) ? 1 : -1;
+        ACCUM_LO[bit] += ((lo >>> bit) & 1) ? 1 : -1;
       }
-    }
+    });
 
     if (tokenCount === 0) {
       return { hi: 0, lo: 0 };
@@ -68,8 +73,8 @@ export class SimHashEngine {
     let resultLo = 0;
 
     for (let bit = 0; bit < 32; bit++) {
-      if (vHi[bit] > 0) resultHi |= (1 << bit);
-      if (vLo[bit] > 0) resultLo |= (1 << bit);
+      if (ACCUM_HI[bit] > 0) resultHi |= (1 << bit);
+      if (ACCUM_LO[bit] > 0) resultLo |= (1 << bit);
     }
 
     return {

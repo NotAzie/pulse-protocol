@@ -1,5 +1,5 @@
 /**
- * ZeroCopyStreamTokenizer
+ * ZeroCopyStreamTokenizer — High-Throughput Lexical Scanner
  *
  * Scans UTF-16 code units directly over the input string without allocating
  * intermediate string arrays or slices. Computes 32-bit FNV-1a hashes on the fly
@@ -28,10 +28,9 @@ export function fnv1a(str: string, start = 0, end = str.length): number {
 }
 
 function isDelimiter(code: number): boolean {
-  // Whitespace (<= 32), punctuation: ! " # $ % & ( ) * + , - . / : ; < = > ? @ [ \ ] ^ _ ` { | } ~
   return (
     code <= 32 ||
-    (code >= 33 && code <= 47 && code !== 39) || // standard punctuation except apostrophe
+    (code >= 33 && code <= 47 && code !== 39) ||
     (code >= 58 && code <= 64) ||
     (code >= 91 && code <= 96) ||
     (code >= 123 && code <= 126)
@@ -48,7 +47,63 @@ export class ZeroCopyStreamTokenizer {
   }
 
   /**
-   * Lazily iterate through token spans without heap allocations.
+   * High-speed callback scanner eliminating generator allocation overhead.
+   */
+  scan(callback: (span: TokenSpan) => void | boolean): void {
+    const text = this.text;
+    const len = this.len;
+    let i = 0;
+
+    while (i < len) {
+      const code = text.charCodeAt(i);
+      if (isDelimiter(code)) {
+        i++;
+        continue;
+      }
+
+      if (code >= 0xd800 && code <= 0xdbff && i + 1 < len) {
+        const start = i;
+        i += 2;
+        const cont = callback({
+          start,
+          end: i,
+          hash: fnv1a(text, start, i),
+          isEmoji: true,
+        });
+        if (cont === false) return;
+        continue;
+      }
+
+      const start = i;
+      let hash = FNV_OFFSET_BASIS;
+
+      while (i < len) {
+        const c = text.charCodeAt(i);
+        if (isDelimiter(c)) {
+          break;
+        }
+        const lowerChar = c >= 65 && c <= 90 ? c + 32 : c;
+        hash ^= lowerChar;
+        hash = Math.imul(hash, FNV_PRIME);
+        i++;
+      }
+
+      if (i > start) {
+        const cont = callback({
+          start,
+          end: i,
+          hash: hash >>> 0,
+          isEmoji: false,
+        });
+        if (cont === false) return;
+      } else {
+        i++;
+      }
+    }
+  }
+
+  /**
+   * Lazily iterate through token spans.
    */
   *tokens(): Generator<TokenSpan, void, unknown> {
     const text = this.text;
@@ -58,13 +113,11 @@ export class ZeroCopyStreamTokenizer {
     while (i < len) {
       const code = text.charCodeAt(i);
 
-      // Skip delimiters
       if (isDelimiter(code)) {
         i++;
         continue;
       }
 
-      // Check emoji surrogate pair or high unicode symbol
       if (code >= 0xd800 && code <= 0xdbff && i + 1 < len) {
         const start = i;
         i += 2;
@@ -77,7 +130,6 @@ export class ZeroCopyStreamTokenizer {
         continue;
       }
 
-      // Standard token
       const start = i;
       let hash = FNV_OFFSET_BASIS;
 
@@ -86,7 +138,6 @@ export class ZeroCopyStreamTokenizer {
         if (isDelimiter(c)) {
           break;
         }
-        // Normalize ASCII lowercase inline
         const lowerChar = c >= 65 && c <= 90 ? c + 32 : c;
         hash ^= lowerChar;
         hash = Math.imul(hash, FNV_PRIME);
@@ -106,9 +157,6 @@ export class ZeroCopyStreamTokenizer {
     }
   }
 
-  /**
-   * Extract token string only when requested.
-   */
   substring(span: TokenSpan): string {
     return this.text.slice(span.start, span.end);
   }
