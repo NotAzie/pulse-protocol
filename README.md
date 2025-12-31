@@ -1,8 +1,9 @@
-# CampusPulse: Autonomous Cognitive Feedback Intelligence Infrastructure
+# PulseProtocol: Autonomous Cognitive Feedback Intelligence Infrastructure
 
 ## System Specification and Technical Reference Manual
 ### Release Version: 1.0.0-GA (Singularity Edition)
-### Protocol Standard: RFC-2025-CP-01
+### Protocol Standard: RFC-2025-PULSE-01
+### Canonical Repository: [https://github.com/NotAzie/pulse-protocol](https://github.com/NotAzie/pulse-protocol)
 
 ---
 

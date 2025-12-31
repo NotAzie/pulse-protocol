@@ -1,7 +1,13 @@
 {
-  "name": "campuspulse",
+  "name": "pulse-protocol",
   "version": "1.0.0-GA",
   "description": "Autonomous Cognitive Feedback Intelligence Protocol and Engine",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/NotAzie/pulse-protocol.git"
+  },
+  "homepage": "https://github.com/NotAzie/pulse-protocol#readme",
+  "license": "MIT",
   "private": true,
   "type": "module",
   "packageManager": "pnpm@11.25.0",
