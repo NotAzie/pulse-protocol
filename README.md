@@ -1,90 +1,116 @@
-# CampusPulse — Cognitive Feedback Intelligence Platform (V2 Singularity)
+# CampusPulse — Cognitive Feedback Intelligence & Singularity Protocol (V2.5)
 
-> **"Discarding convention. Architecting the unfair advantage."**  
-> CampusPulse is a zero-latency, client-side cognitive intelligence platform that transforms chaotic natural language feedback streams into real-time multi-dimensional affect tensors, topological causal DAGs, and predictive crisis radar—running 100% locally in the browser with zero external network calls or cloud inference.
+> **"From a static web application to foundational cognitive infrastructure."**  
+> CampusPulse V2.5 is an autonomous, self-optimizing cognitive operating protocol. It transforms unstructured feedback streams into real-time multi-dimensional affect tensors, topological causal DAGs, predictive crisis radars, and autonomous agentic interventions—running 100% locally in the browser or headlessly on edge workers.
 
 ---
 
-## ⚡ The V2 Quantum Pulse Paradigm Shift
-
-Legacy feedback analyzers operate on naive 1D scalar sentiment ("positive / negative / neutral") via $O(N \cdot L)$ string allocations, lagging behind real-world university dynamics. CampusPulse V2 replaces legacy mechanics with bleeding-edge mathematical, bitwise, and topological algorithms:
+## 🌌 The Singularity Protocol Architecture
 
 ```mermaid
 flowchart TD
-    Raw["Raw Feedback Streams (CSV / Text / Live)"] --> ZC["Zero-Copy Stream Tokenizer<br/>(UTF-16 code units, FNV-1a inline hashes)"]
-    ZC --> LSH["64-bit SimHash Embeddings<br/>(Locality-Sensitive Hashing, O(1) Hamming Distance)"]
-    ZC --> MAT["Multi-Dimensional Affect Tensor<br/>(Valence, Arousal, Dominance, dF/dt, Shannon Entropy)"]
-    
-    LSH & MAT --> CDG["Topological Causal Dependency Graph<br/>(PageRank Centrality & Cross-Domain Co-occurrence)"]
-    CDG --> GSS["The Unfair Advantage: Ghost Signal Radar™<br/>(Predictive Outbreak Forecasts in 24h-48h Windows)"]
-    CDG --> PCE["Prescriptive Countermeasure Engine<br/>(Mathematically Projected Friction Reduction & ROI)"]
-    
-    MAT --> CANV["Force-Directed Semantic Resonance Well<br/>(60 FPS Hardware-Accelerated Physics Canvas)"]
+    subgraph Layer1["1. INGESTION & PROTOCOL ADAPTERS"]
+        A1["Streaming Comments<br/>(CSV / WebSocket / API)"] --> A2["Headless Pulse SDK<br/>(@campuspulse/protocol)"]
+        A2 --> A3["Zero-Copy UTF-16 Stream Tokenizer<br/>(O(1) Heap Allocations)"]
+    end
+
+    subgraph Layer2["2. THE COGNITIVE MATRIX"]
+        A3 --> B1["64-bit SimHash LSH Embeddings<br/>(O(1) Bitwise Popcount)"]
+        A3 --> B2["5D Affect Tensor<br/>(Valence, Arousal, Dominance, dF/dt, Entropy)"]
+        B1 & B2 --> B3["Topological Causal Dependency DAG<br/>(Power-Iteration PageRank Centrality)"]
+    end
+
+    subgraph Layer3["3. AGENTIC AUTONOMY & META-HEALING"]
+        B3 --> C1["Ghost Signal Radar™<br/>(Predictive Outbreaks in 24h-48h)"]
+        C1 --> C2["Autonomous ReAct Agent Loop<br/>(Thought ➔ Action ➔ Observation)"]
+        C2 --> C3["Prescriptive Remediation Dispatch<br/>(Zero User Hand-Holding)"]
+        
+        M1["Runtime Telemetry Kernel"] --> M2["Adaptive Cache Resizing & Self-Healing Circuit Breaker"]
+        M2 -.-> B1 & B2
+    end
+
+    Layer1 --> Layer2 --> Layer3
 ```
 
 ---
 
-## 🔬 Architectural & Mathematical Innovations
+## ⚡ The Three Singularity Pillars
 
-### 1. Zero-Copy Stream Tokenizer ($O(1)$ Extra Heap Allocations)
-Rather than executing `text.split(' ')` or generating intermediate object arrays that cause GC pauses, the `ZeroCopyStreamTokenizer` scans UTF-16 code units directly using bitwise delimiter masks. It yields token coordinates and computes inline 32-bit FNV-1a hashes on the fly.
-
-### 2. 64-bit Locality-Sensitive Hashing (SimHash) with $O(1)$ Semantic Distance
-Text documents are mapped into compact 64-bit hyper-dimensional bitvectors. Semantic similarity between any two arbitrary comments is computed in $O(1)$ time via bitwise XOR and parallel hardware popcount:
-$$\text{Sim}(A, B) = 1 - \frac{\text{popcount}(A \oplus B)}{64}$$
-
-### 3. Multi-Dimensional Affect Tensor
-Replaces flat sentiment scores with a 5-variable cognitive state tensor:
-- **Valence ($V \in [-1.0, 1.0]$):** Systemic pleasure vs discontent.
-- **Arousal ($A \in [0.0, 1.0]$):** Collective urgency and volatility.
-- **Dominance ($D \in [0.0, 1.0]$):** Student perceived agency vs helplessness.
-- **Friction Velocity ($\frac{dF}{dt}$):** Temporal rate of frustration acceleration.
-- **Polarization Entropy ($H$):** Shannon entropy metric identifying bimodal / fractured opinion clusters before campus consensus splits.
-
-### 4. The 'Unfair Advantage': Ghost Signal Radar™ & Causal DAG
-Standard tools report what happened *in the past*. The Ghost Signal Radar detects subtle, sub-threshold n-gram tremors in upstream infrastructure (e.g. Wi-Fi packet drops in Block C) and forecasts downstream cascade failures (e.g. study space overcrowding, cafeteria line spikes) 24 to 48 hours before they become crises.
-
-### 5. Prescriptive Countermeasure Engine
-Translates root-cause centrality into high-ROI executive interventions with mathematically projected Friction Reduction Scores (FRS).
+### 1. The Meta-Architecture (Self-Optimization & Self-Healing)
+* **Runtime Telemetry Kernel (`src/core/meta/telemetry.ts`):** Continuously monitors microsecond execution latencies, heap memory utilization, throughput, and cache efficiency.
+* **Dynamic Execution Adaptation (`src/core/meta/optimizer.ts`):** Automatically mutates execution strategy at runtime:
+  * `BitwiseDirect`: Activated under nominal load for sub-millisecond execution.
+  * `ParallelWorker`: Activated under elevated compute pressure to offload processing to Web Workers.
+  * `StreamChunked`: Activated under high heap pressure to eliminate garbage collection pauses.
+* **Self-Healing Circuit Breakers:** Catches corrupted inputs or processing spikes, transparently falling back to safe paths without UI interruption.
+* **Adaptive LFU/LRU Cache (`src/core/meta/cache.ts`):** Automatically expands or shrinks capacity based on real-time memory telemetry.
 
 ---
 
-## 🚀 Quickstart & Verification
+### 2. Agentic Autonomy (Autonomous ReAct Reasoning Loop)
+* **Pulse Event Broker (`src/core/agent/broker.ts`):** Decouples system events from static request-response cycles with an asynchronous reactive bus.
+* **Autonomous ReAct Agent Engine (`src/core/agent/react.ts`):** Embeds an autonomous **Thought $\to$ Action $\to$ Observation** cognitive loop:
+  1. **Cognition:** Analyzes incoming stream dynamics (Valence, Friction Velocity $dF/dt$, Polarization Entropy).
+  2. **Hypothesis:** When friction accelerates ($dF/dt > 0.15$), invokes `traceCausalDependencies` to isolate the root-cause culprit.
+  3. **Prescription:** Invokes `generatePrescriptions` to compute the highest-ROI intervention.
+  4. **Remediation Dispatch:** Autonomously emits infrastructure remediation tickets without human intervention.
 
-CampusPulse uses Node 22 and pnpm 11.
+---
 
-```sh
-pnpm install
-pnpm dev
+### 3. The Protocol Shift: Open Headless SDK (`@campuspulse/protocol`)
+The entire platform is abstracted into an extensible protocol SDK (`src/protocol/`):
+```typescript
+import { createPulseProtocol } from '@campuspulse/protocol';
+
+// Initialize the cognitive engine in 3 lines of code
+const pulse = createPulseProtocol({
+  appId: 'campus-enterprise',
+  autoHealing: true,
+  autonomousAgent: true,
+});
+
+// Ingest streams headlessly
+const { analysis, systemHealth, agentReport } = await pulse.ingest(comments);
 ```
+* **Extensible Plugin Architecture:** Hook into lifecycle events (`onInitialize`, `onIngest`, `onGhostSignalDetected`, `onAgentActionDispatched`).
+* **Multi-Environment Adapters:** Run in the Browser, Cloudflare Workers, V8 Isolates, or Node.js microservices.
 
-Build production static assets with zero warnings:
+---
+
+## 🚀 Verification & Benchmark Suite
+
 ```sh
+# Execute 31 rigorous unit, integration, and meta-agent tests
+pnpm test
+
+# Build production assets
 pnpm build
 ```
 
-Execute the full mathematical and integration test suite:
-```sh
-pnpm test
-```
-
 ---
 
-## 📂 Project Architecture Map
+## 📂 Protocol Codebase Layout
 
-- `src/core/pulse/` — The V2 QuantumPulse mathematical and topological engine:
-  - `tokenizer.ts` — Zero-copy streaming tokenizer and FNV-1a hash functions.
-  - `simhash.ts` — 64-bit Locality-Sensitive Hashing with hardware popcount.
-  - `affect.ts` — Multi-dimensional affect tensor, friction velocity, and Shannon entropy.
-  - `causal.ts` — Topological causal DAG induction and Ghost Signal synthesis.
-  - `prescriptive.ts` — Prescriptive countermeasure and ROI engine.
-  - `engine.ts` — Unified `QuantumPulse` single-call API facade.
-- `src/components/` — UI components:
-  - `QuantumPulseView.tsx` — 60 FPS force-directed semantic resonance canvas and HUD telemetry.
-  - `BrandMark.tsx` — Custom responsive vector mark.
-  - `SentimentChart.tsx` — Recharts visualizer.
-- `src/features/` — Analyzer and insight features:
-  - `analyzer/CommentsPanel.tsx` — Paginated, searchable comment explorer.
-  - `insights/InsightPanels.tsx` — Campus entity analysis and narrative summaries.
-- `src/lib/` — Foundational feedback and sentiment adapters.
-- `src/workers/` — Asynchronous background Web Worker threads.
+- `src/protocol/` — The Public Pulse SDK & Plugin Specification:
+  - `index.ts` — `PulseProtocol` facade and factory.
+  - `types.ts` — Protocol configuration and plugin interfaces.
+  - `plugin.ts` — `PulsePluginManager` lifecycle dispatcher.
+  - `adapters.ts` — Headless and edge runtime adapters.
+- `src/core/meta/` — Meta-Architecture & Self-Optimization:
+  - `telemetry.ts` — Performance and memory observation kernel.
+  - `optimizer.ts` — `SelfOptimizingKernel` dynamic strategy supervisor.
+  - `cache.ts` — `AdaptiveCache` dynamic LFU/LRU memory cache.
+- `src/core/agent/` — Autonomous Agent & Reasoning:
+  - `broker.ts` — `PulseEventBroker` reactive message bus.
+  - `tools.ts` — `AgentToolRegistry` typed tool execution catalog.
+  - `react.ts` — `AutonomousAgentEngine` Thought-Action-Observation loop.
+- `src/core/pulse/` — Foundational Bitwise & Topological Engine:
+  - `tokenizer.ts` — Zero-copy streaming tokenizer.
+  - `simhash.ts` — 64-bit Locality-Sensitive Hashing.
+  - `affect.ts` — 5D Affect Tensor & Shannon Entropy.
+  - `causal.ts` — Topological Causal Graph & Ghost Signal Radar.
+  - `prescriptive.ts` — Prescriptive Countermeasure Engine.
+  - `engine.ts` — `QuantumPulse` single-call pipeline.
+- `src/components/` — UI & Visualizations:
+  - `SingularityHUD.tsx` — Real-time telemetry & autonomous ReAct feed.
+  - `QuantumPulseView.tsx` — 60 FPS force-directed physics resonance canvas.

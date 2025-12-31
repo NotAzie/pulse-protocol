@@ -8,6 +8,7 @@ import BrandMark from '../components/BrandMark';
 import CommentsPanel from '../features/analyzer/CommentsPanel';
 import { EntityPanel, InsightSummary } from '../features/insights/InsightPanels';
 import { QuantumPulseView } from '../components/QuantumPulseView';
+import { SingularityHUD } from '../components/SingularityHUD';
 import { QuantumPulse, type QuantumPulseAnalysis } from '../core/pulse/engine';
 import type { AnalysisOutput } from '../lib/sentiment/analyze';
 import { parseFeedbackCsv, csvEscape, type ParsedFeedbackCsv } from '../lib/feedback/csv';
@@ -355,6 +356,9 @@ export default function App() {
           </section>
 
           {quantumAnalysis && <QuantumPulseView data={quantumAnalysis} />}
+          {analysis && analysis.entries.length > 0 && (
+            <SingularityHUD comments={analysis.entries.map((e) => e.originalText)} />
+          )}
 
           <section className="lower-grid" aria-label="Campus and narrative insights">
             <EntityPanel entities={entities} />
