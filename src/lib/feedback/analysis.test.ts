@@ -37,7 +37,7 @@ describe('CampusPulse sentiment analysis', () => {
   });
 
   it('counts Unicode emoji signals and treats neutral text safely', async () => {
-    expect(await classify('😊😊')).toBe('Positive');
+    expect(await classify('\u{1F60A}\u{1F60A}')).toBe('Positive');
     expect(await classify('Friday, 12:30 — Block A')).toBe('Neutral');
     expect((await analyzeFeedback(' \n  ')).entries).toHaveLength(0);
   });
@@ -76,7 +76,7 @@ describe('CampusPulse sentiment analysis', () => {
   });
 
   it('handles long Unicode and mixed-language text without throwing', async () => {
-    const longComment = `${'学生 feedback '.repeat(400)}El taller fue helpful 😊`;
+    const longComment = `${'学生 feedback '.repeat(400)}El taller fue helpful \u{1F60A}`;
     const result = await analyzeFeedback(longComment);
     expect(result.entries).toHaveLength(1);
     expect(result.entries[0].originalText.length).toBe(longComment.length);

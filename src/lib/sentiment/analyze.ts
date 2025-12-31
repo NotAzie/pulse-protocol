@@ -35,7 +35,7 @@ const positiveWords = new Map<string, number>([
   ['helpful', 1.7], ['improved', 1.3], ['impressive', 1.8], ['inspiring', 1.8], ['love', 2.2],
   ['loved', 2.2], ['nice', 1.2], ['perfect', 2.5], ['pleasant', 1.4], ['recommend', 1.6],
   ['smooth', 1.2], ['supportive', 1.8], ['useful', 1.5], ['wonderful', 2.4], ['worthwhile', 1.8], ['reliable', 1.5], ['responsive', 1.3],
-  ['😊', 1.8], ['😀', 1.8], ['😍', 2.0], ['💚', 1.5], ['👍', 1.8], ['✨', 1.0],
+  ['\u{1F60A}', 1.8], ['\u{1F600}', 1.8], ['\u{1F60D}', 2.0], ['\u{1F49A}', 1.5], ['\u{1F44D}', 1.8], ['\u{2728}', 1.0],
 ]);
 
 const negativeWords = new Map<string, number>([
@@ -45,7 +45,7 @@ const negativeWords = new Map<string, number>([
   ['hate', -2.4], ['hated', -2.4], ['late', -1.0], ['long', -0.55], ['loud', -1.0], ['missing', -1.2],
   ['noisy', -1.5], ['poor', -1.8], ['problem', -1.2], ['rude', -1.8], ['slow', -1.4], ['stressful', -1.7],
   ['terrible', -2.6], ['uncomfortable', -1.8], ['unhelpful', -1.9], ['useless', -2.0], ['waste', -1.8], ['slowly', -1.3],
-  ['worst', -2.6], ['😞', -1.8], ['😢', -1.7], ['😡', -2.0], ['👎', -1.8], ['💔', -1.8],
+  ['worst', -2.6], ['\u{1F61E}', -1.8], ['\u{1F622}', -1.7], ['\u{1F621}', -2.0], ['\u{1F44E}', -1.8], ['\u{1F494}', -1.8],
 ]);
 
 const negators = new Set(['not', "n't", 'never', 'no', 'hardly', 'without', 'neither', 'nor']);
@@ -82,7 +82,7 @@ function removeNonSentimentIdentifiers(text: string): string {
 }
 
 function dictionaryPolarity(text: string): number {
-  const tokens = text.toLocaleLowerCase().match(/[\p{L}\p{N}'’]+|[😊😀😍💚👍✨😞😢😡👎💔]/gu) ?? [];
+  const tokens = text.toLocaleLowerCase().match(/[\p{L}\p{N}'’]+|[\u{1F60A}\u{1F600}\u{1F60D}\u{1F49A}\u{1F44D}\u{2728}\u{1F61E}\u{1F622}\u{1F621}\u{1F44E}\u{1F494}]/gu) ?? [];
   let total = 0;
   for (let index = 0; index < tokens.length; index += 1) {
     const token = tokens[index];
@@ -99,8 +99,8 @@ function dictionaryPolarity(text: string): number {
 
 function applyEmojiCues(text: string, score: number): number {
   if (Math.abs(score) >= 0.05) return score;
-  const positive = text.match(/[😊😀😍💚👍✨]/gu)?.length ?? 0;
-  const negative = text.match(/[😞😢😡👎💔]/gu)?.length ?? 0;
+  const positive = text.match(/[\u{1F60A}\u{1F600}\u{1F60D}\u{1F49A}\u{1F44D}\u{2728}]/gu)?.length ?? 0;
+  const negative = text.match(/[\u{1F61E}\u{1F622}\u{1F621}\u{1F44E}\u{1F494}]/gu)?.length ?? 0;
   if (positive > negative) return Math.min(0.65, 0.22 + (positive - negative) * 0.1);
   if (negative > positive) return Math.max(-0.65, -0.22 - (negative - positive) * 0.1);
   return score;

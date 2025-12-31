@@ -99,7 +99,7 @@ export default function App() {
     if (!text.trim() && !csvComments?.some((comment) => comment.trim())) {
       setAnalysis(null);
       setIsAnalyzing(false);
-      setErrorMessage('👋 It looks like there is no feedback here yet. Add student comments above, one per line, and we’ll uncover the signal.');
+      setErrorMessage('No feedback input detected. Provide text lines or upload a structured CSV dataset to proceed.');
       return;
     }
     setIsAnalyzing(true);
@@ -333,9 +333,9 @@ export default function App() {
 
           <section className="metrics-grid" aria-label="Sentiment statistics">
             <article className="metric-card metric-card--total"><div className="metric-top"><span className="metric-label">TOTAL COMMENTS</span><span className="metric-icon metric-icon--ink"><MessageSquareText size={16} /></span></div><div className="metric-value">{stats.total.toLocaleString()}</div><div className="metric-foot"><span>{analysis ? `${analysis.uniqueComments.toLocaleString()} unique comments` : 'Waiting for your first analysis'}</span><span className="metric-trail" /></div></article>
-            <article className="metric-card metric-card--positive"><div className="metric-top"><span className="metric-label">POSITIVE</span><span className="metric-icon metric-icon--positive">😊</span></div><div className="metric-value">{stats.positive.toLocaleString()}<small>{stats.positivePercent.toFixed(1)}%</small></div><div className="metric-progress"><span style={{ width: `${stats.positivePercent}%` }} /></div></article>
-            <article className="metric-card metric-card--negative"><div className="metric-top"><span className="metric-label">NEGATIVE</span><span className="metric-icon metric-icon--negative">😞</span></div><div className="metric-value">{stats.negative.toLocaleString()}<small>{stats.negativePercent.toFixed(1)}%</small></div><div className="metric-progress"><span style={{ width: `${stats.negativePercent}%` }} /></div></article>
-            <article className="metric-card metric-card--neutral"><div className="metric-top"><span className="metric-label">NEUTRAL</span><span className="metric-icon metric-icon--neutral">😐</span></div><div className="metric-value">{stats.neutral.toLocaleString()}<small>{stats.neutralPercent.toFixed(1)}%</small></div><div className="metric-progress"><span style={{ width: `${stats.neutralPercent}%` }} /></div></article>
+            <article className="metric-card metric-card--positive"><div className="metric-top"><span className="metric-label">POSITIVE</span><span className="metric-icon metric-icon--positive">+</span></div><div className="metric-value">{stats.positive.toLocaleString()}<small>{stats.positivePercent.toFixed(1)}%</small></div><div className="metric-progress"><span style={{ width: `${stats.positivePercent}%` }} /></div></article>
+            <article className="metric-card metric-card--negative"><div className="metric-top"><span className="metric-label">NEGATIVE</span><span className="metric-icon metric-icon--negative">-</span></div><div className="metric-value">{stats.negative.toLocaleString()}<small>{stats.negativePercent.toFixed(1)}%</small></div><div className="metric-progress"><span style={{ width: `${stats.negativePercent}%` }} /></div></article>
+            <article className="metric-card metric-card--neutral"><div className="metric-top"><span className="metric-label">NEUTRAL</span><span className="metric-icon metric-icon--neutral">=</span></div><div className="metric-value">{stats.neutral.toLocaleString()}<small>{stats.neutralPercent.toFixed(1)}%</small></div><div className="metric-progress"><span style={{ width: `${stats.neutralPercent}%` }} /></div></article>
           </section>
 
           <section className="analytics-grid" aria-label="Feedback insights">

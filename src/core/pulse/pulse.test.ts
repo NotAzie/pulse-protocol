@@ -18,8 +18,8 @@ describe('QuantumPulse Next-Gen Engine Test Suite', () => {
       expect(tokens[3].hash).toBe(fnv1a('amazing'));
     });
 
-    it('handles emoji surrogate pairs', () => {
-      const text = 'Great food 😊👍';
+    it('handles high unicode surrogate pairs', () => {
+      const text = 'Great food \uD83D\uDE0A\uD83D\uDC4D';
       const tokenizer = new ZeroCopyStreamTokenizer(text);
       const tokens = Array.from(tokenizer.tokens());
       const emojis = tokens.filter(t => t.isEmoji);

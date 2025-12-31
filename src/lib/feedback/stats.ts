@@ -15,7 +15,7 @@ export interface DistributionItem {
   value: number;
   percentage: number;
   color: string;
-  emoji: string;
+  symbol: string;
 }
 
 export function calculateStats(entries: FeedbackEntry[]): SentimentStats {
@@ -37,9 +37,9 @@ export function calculateStats(entries: FeedbackEntry[]): SentimentStats {
 
 export function toDistribution(stats: SentimentStats): DistributionItem[] {
   return [
-    { name: 'Positive', value: stats.positive, percentage: stats.positivePercent, color: '#15845f', emoji: '😊' },
-    { name: 'Neutral', value: stats.neutral, percentage: stats.neutralPercent, color: '#87938e', emoji: '😐' },
-    { name: 'Negative', value: stats.negative, percentage: stats.negativePercent, color: '#d2695d', emoji: '😞' },
+    { name: 'Positive', value: stats.positive, percentage: stats.positivePercent, color: '#15845f', symbol: '+' },
+    { name: 'Neutral', value: stats.neutral, percentage: stats.neutralPercent, color: '#87938e', symbol: '=' },
+    { name: 'Negative', value: stats.negative, percentage: stats.negativePercent, color: '#d2695d', symbol: '-' },
   ];
 }
 

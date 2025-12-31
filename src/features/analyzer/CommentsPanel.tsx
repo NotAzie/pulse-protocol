@@ -3,10 +3,10 @@ import { ChevronLeft, ChevronRight, Search } from 'lucide-react';
 import type { FeedbackEntry, Sentiment } from '../../lib/sentiment/analyze';
 
 const PAGE_SIZE = 8;
-const sentimentMeta: Record<Sentiment, { emoji: string; className: string }> = {
-  Positive: { emoji: '😊', className: 'positive' },
-  Negative: { emoji: '😞', className: 'negative' },
-  Neutral: { emoji: '😐', className: 'neutral' },
+const sentimentMeta: Record<Sentiment, { symbol: string; className: string }> = {
+  Positive: { symbol: '+', className: 'positive' },
+  Negative: { symbol: '-', className: 'negative' },
+  Neutral: { symbol: '=', className: 'neutral' },
 };
 
 export default function CommentsPanel({ entries }: { entries: FeedbackEntry[] }) {
@@ -52,7 +52,7 @@ export default function CommentsPanel({ entries }: { entries: FeedbackEntry[] })
               <div className="comment-copy">
                 <p>“{entry.originalText}”</p>
                 <div className="comment-meta">
-                  <span className={`sentiment-chip sentiment-chip--${meta.className}`}><span aria-hidden="true">{meta.emoji}</span> {entry.sentiment}</span>
+                  <span className={`sentiment-chip sentiment-chip--${meta.className}`}><span aria-hidden="true">{meta.symbol}</span> {entry.sentiment}</span>
                   <span className="engine-label">{entry.engine}</span>
                   {entry.aspects.map((aspect) => (
                     <span className={`aspect-chip aspect-chip--${aspect.sentiment.toLocaleLowerCase()}`} key={`${aspect.topic}-${aspect.sentiment}`}>
@@ -73,7 +73,7 @@ export default function CommentsPanel({ entries }: { entries: FeedbackEntry[] })
           const meta = sentimentMeta[entry.sentiment];
           return <article className="print-comment-row" key={`print-${entry.id}`}>
             <span className="print-comment-index">{(index + 1).toString().padStart(2, '0')}</span>
-            <div><p>“{entry.originalText}”</p><span className="print-comment-meta">{meta.emoji} {entry.sentiment} · {entry.engine} · Score {entry.score >= 0 ? '+' : ''}{entry.score.toFixed(2)}{entry.aspects.length ? ` · ${entry.aspects.map((aspect) => `${aspect.topic}: ${aspect.sentiment.toLowerCase()}`).join('; ')}` : ''}</span></div>
+            <div><p>“{entry.originalText}”</p><span className="print-comment-meta">{meta.symbol} {entry.sentiment} · {entry.engine} · Score {entry.score >= 0 ? '+' : ''}{entry.score.toFixed(2)}{entry.aspects.length ? ` · ${entry.aspects.map((aspect) => `${aspect.topic}: ${aspect.sentiment.toLowerCase()}`).join('; ')}` : ''}</span></div>
           </article>;
         })}
       </div>

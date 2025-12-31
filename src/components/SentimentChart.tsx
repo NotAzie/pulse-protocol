@@ -31,7 +31,7 @@ export function SentimentChart({ data, total }: SentimentChartProps) {
         {data.map((item) => (
           <div className="legend-row" key={item.name}>
             <span className="legend-dot" style={{ backgroundColor: item.color }} aria-hidden="true" />
-            <span className="legend-name">{item.emoji} {item.name}</span>
+            <span className="legend-name">{item.symbol} {item.name}</span>
             <span className="legend-value">{item.value.toLocaleString()}</span>
             <span className="legend-percent">{item.percentage.toFixed(1)}%</span>
           </div>
